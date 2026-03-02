@@ -445,6 +445,35 @@
             letter-spacing: 1.5px;
         }
 
+        .sprite-download-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 14px;
+            padding: 10px 22px;
+            background: linear-gradient(135deg, rgba(79, 195, 247, 0.15), rgba(179, 136, 255, 0.15));
+            color: var(--accent-blue);
+            border: 1px solid rgba(79, 195, 247, 0.3);
+            border-radius: 50px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.82rem;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 0.3px;
+        }
+
+        .sprite-download-btn:hover {
+            background: linear-gradient(135deg, rgba(79, 195, 247, 0.25), rgba(179, 136, 255, 0.25));
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(79, 195, 247, 0.2);
+        }
+
+        .sprite-download-btn:active {
+            transform: translateY(0);
+        }
+
         /* Highlight tag */
         .highlight-tag {
             display: inline-block;
@@ -858,6 +887,7 @@
                 <div class="sprite-preview">
                     <img src="Player02.png" alt="Player02 Sprite Sheet">
                     <div class="sprite-preview-label">📎 Sprite đính kèm — Player02.png</div>
+                    <a href="Player02.png" download="Player02.png" class="sprite-download-btn">📥 Tải Player02.png</a>
                 </div>
             </div>
         </div>
@@ -903,6 +933,7 @@
                 <div class="sprite-preview">
                     <img src="items.png" alt="Items Sprite Sheet">
                     <div class="sprite-preview-label">📎 Sprite đính kèm — items.png</div>
+                    <a href="items.png" download="items.png" class="sprite-download-btn">📥 Tải items.png</a>
                 </div>
             </div>
         </div>
@@ -989,6 +1020,7 @@
                 <div class="sprite-preview">
                     <img src="tilemap.png" alt="Tilemap Sprite">
                     <div class="sprite-preview-label">📎 Tilemap đính kèm — tilemap.png</div>
+                    <a href="tilemap.png" download="tilemap.png" class="sprite-download-btn">📥 Tải tilemap.png</a>
                 </div>
             </div>
         </div>
