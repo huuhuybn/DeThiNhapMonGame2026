@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đề Thi - Nhập Môn Lập Trình Game</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0f0f1a;
+            --bg-secondary: #1a1a2e;
+            --bg-card: #16213e;
+            --accent-blue: #4fc3f7;
+            --accent-purple: #b388ff;
+            --accent-green: #69f0ae;
+            --accent-orange: #ffab40;
+            --accent-pink: #ff80ab;
+            --accent-red: #ff5252;
+            --text-primary: #e8eaf6;
+            --text-secondary: #9fa8da;
+            --text-muted: #7986cb;
+            --border-color: rgba(79, 195, 247, 0.15);
+            --shadow-glow: 0 0 30px rgba(79, 195, 247, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.7;
+        }
+
+        /* Animated background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(ellipse at 20% 20%, rgba(79, 195, 247, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(179, 136, 255, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(105, 240, 174, 0.04) 0%, transparent 60%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 24px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header */
+        .exam-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 40px 32px;
+            background: linear-gradient(135deg, rgba(26, 26, 46, 0.9), rgba(22, 33, 62, 0.9));
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            box-shadow: var(--shadow-glow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .exam-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple), var(--accent-green));
+            animation: gradientShift 4s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .school-name {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--accent-blue);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 8px;
+        }
+
+        .department {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 24px;
+        }
+
+        .exam-title {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .exam-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            margin-bottom: 24px;
+        }
+
+        .exam-meta {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 18px;
+            background: rgba(79, 195, 247, 0.08);
+            border: 1px solid rgba(79, 195, 247, 0.15);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+        }
+
+        .meta-item:hover {
+            background: rgba(79, 195, 247, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .meta-icon {
+            font-size: 1.1rem;
+        }
+
+        .meta-label {
+            font-weight: 600;
+            color: var(--accent-blue);
+        }
+
+        /* Info Section */
+        .info-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .info-card {
+            padding: 20px 24px;
+            background: linear-gradient(135deg, rgba(26, 26, 46, 0.8), rgba(22, 33, 62, 0.6));
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .info-card:hover {
+            border-color: rgba(79, 195, 247, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        }
+
+        .info-card-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .info-card-value {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* Notes */
+        .notes-section {
+            padding: 24px;
+            background: linear-gradient(135deg, rgba(255, 171, 64, 0.08), rgba(255, 128, 171, 0.05));
+            border: 1px solid rgba(255, 171, 64, 0.2);
+            border-radius: 14px;
+            margin-bottom: 36px;
+        }
+
+        .notes-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--accent-orange);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .notes-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .notes-list li {
+            padding: 6px 0;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .notes-list li::before {
+            content: '▸';
+            color: var(--accent-orange);
+            font-weight: 700;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        /* Questions */
+        .question-card {
+            margin-bottom: 24px;
+            background: linear-gradient(135deg, rgba(26, 26, 46, 0.9), rgba(22, 33, 62, 0.7));
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            position: relative;
+        }
+
+        .question-card:hover {
+            border-color: rgba(79, 195, 247, 0.3);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+            transform: translateY(-3px);
+        }
+
+        .question-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .question-number {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 14px;
+            font-size: 1.1rem;
+            font-weight: 800;
+            flex-shrink: 0;
+        }
+
+        .q1 .question-number {
+            background: linear-gradient(135deg, rgba(79, 195, 247, 0.2), rgba(79, 195, 247, 0.05));
+            color: var(--accent-blue);
+            border: 1px solid rgba(79, 195, 247, 0.3);
+        }
+
+        .q2 .question-number {
+            background: linear-gradient(135deg, rgba(105, 240, 174, 0.2), rgba(105, 240, 174, 0.05));
+            color: var(--accent-green);
+            border: 1px solid rgba(105, 240, 174, 0.3);
+        }
+
+        .q3 .question-number {
+            background: linear-gradient(135deg, rgba(255, 128, 171, 0.2), rgba(255, 128, 171, 0.05));
+            color: var(--accent-pink);
+            border: 1px solid rgba(255, 128, 171, 0.3);
+        }
+
+        .q4 .question-number {
+            background: linear-gradient(135deg, rgba(179, 136, 255, 0.2), rgba(179, 136, 255, 0.05));
+            color: var(--accent-purple);
+            border: 1px solid rgba(179, 136, 255, 0.3);
+        }
+
+        .question-title-area {
+            flex: 1;
+        }
+
+        .question-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-muted);
+            margin-bottom: 2px;
+        }
+
+        .question-title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .question-points {
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .q1 .question-points {
+            background: rgba(79, 195, 247, 0.12);
+            color: var(--accent-blue);
+            border: 1px solid rgba(79, 195, 247, 0.25);
+        }
+
+        .q2 .question-points {
+            background: rgba(105, 240, 174, 0.12);
+            color: var(--accent-green);
+            border: 1px solid rgba(105, 240, 174, 0.25);
+        }
+
+        .q3 .question-points {
+            background: rgba(255, 128, 171, 0.12);
+            color: var(--accent-pink);
+            border: 1px solid rgba(255, 128, 171, 0.25);
+        }
+
+        .q4 .question-points {
+            background: rgba(179, 136, 255, 0.12);
+            color: var(--accent-purple);
+            border: 1px solid rgba(179, 136, 255, 0.25);
+        }
+
+        .question-body {
+            padding: 24px;
+        }
+
+        .question-desc {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 16px;
+            line-height: 1.8;
+        }
+
+        .requirements {
+            list-style: none;
+            padding: 0;
+        }
+
+        .requirements li {
+            padding: 10px 16px;
+            margin-bottom: 8px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            border-left: 3px solid;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .requirements li:hover {
+            background: rgba(255, 255, 255, 0.06);
+            transform: translateX(4px);
+        }
+
+        .q1 .requirements li {
+            border-left-color: var(--accent-blue);
+        }
+
+        .q2 .requirements li {
+            border-left-color: var(--accent-green);
+        }
+
+        .q3 .requirements li {
+            border-left-color: var(--accent-pink);
+        }
+
+        .q4 .requirements li {
+            border-left-color: var(--accent-purple);
+        }
+
+        .req-icon {
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        /* Keyboard Key Style */
+        kbd {
+            display: inline-block;
+            padding: 3px 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--accent-blue);
+            background: rgba(79, 195, 247, 0.1);
+            border: 1px solid rgba(79, 195, 247, 0.3);
+            border-radius: 6px;
+            box-shadow: 0 2px 0 rgba(79, 195, 247, 0.15);
+            vertical-align: middle;
+        }
+
+        /* Sprite preview */
+        .sprite-preview {
+            margin-top: 16px;
+            padding: 16px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            border: 1px dashed rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+
+        .sprite-preview img {
+            max-width: 100%;
+            max-height: 250px;
+            border-radius: 8px;
+            image-rendering: pixelated;
+        }
+
+        .sprite-preview-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        /* Highlight tag */
+        .highlight-tag {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 6px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            margin-left: 4px;
+        }
+
+        .tag-important {
+            background: rgba(255, 82, 82, 0.15);
+            color: var(--accent-red);
+            border: 1px solid rgba(255, 82, 82, 0.25);
+        }
+
+        .tag-note {
+            background: rgba(255, 171, 64, 0.12);
+            color: var(--accent-orange);
+            border: 1px solid rgba(255, 171, 64, 0.25);
+        }
+
+        /* Footer */
+        .exam-footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 24px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .footer-text {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        .good-luck {
+            font-size: 1.1rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-green), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-top: 8px;
+        }
+
+        /* Save PNG Button */
+        .save-png-btn {
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 24px;
+            background: linear-gradient(135deg, #4fc3f7, #b388ff);
+            color: #0f0f1a;
+            border: none;
+            border-radius: 50px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 6px 24px rgba(79, 195, 247, 0.35), 0 2px 8px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            letter-spacing: 0.3px;
+        }
+
+        .save-png-btn:hover {
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 10px 36px rgba(79, 195, 247, 0.5), 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        .save-png-btn:active {
+            transform: translateY(-1px) scale(0.98);
+        }
+
+        .save-png-btn.capturing {
+            pointer-events: none;
+            opacity: 0.6;
+        }
+
+        .save-png-btn .btn-icon {
+            font-size: 1.2rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            .container {
+                padding: 20px 16px;
+            }
+
+            .exam-header {
+                padding: 28px 20px;
+            }
+
+            .exam-title {
+                font-size: 1.5rem;
+            }
+
+            .info-section {
+                grid-template-columns: 1fr;
+            }
+
+            .exam-meta {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .question-header {
+                flex-wrap: wrap;
+                gap: 12px;
+            }
+
+            .question-points {
+                order: -1;
+                width: fit-content;
+            }
+        }
+
+        /* Print styles */
+        @media print {
+            body {
+                background: white;
+                color: #1a1a2e;
+            }
+
+            body::before {
+                display: none;
+            }
+
+            .save-png-btn {
+                display: none !important;
+            }
+
+            .exam-header,
+            .info-card,
+            .notes-section,
+            .question-card {
+                background: white;
+                border: 1px solid #ddd;
+                box-shadow: none;
+            }
+
+            .exam-title {
+                -webkit-text-fill-color: #1a1a2e;
+                color: #1a1a2e;
+            }
+
+            .school-name,
+            .meta-label {
+                color: #333;
+            }
+
+            .question-desc,
+            .requirements li,
+            .notes-list li,
+            .text-secondary {
+                color: #444;
+            }
+
+            kbd {
+                color: #333;
+                background: #f0f0f0;
+                border-color: #ccc;
+            }
+
+            .question-card:hover {
+                transform: none;
+                box-shadow: none;
+            }
+
+            .requirements li:hover {
+                transform: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="exam-header">
+            <div class="school-name">Trường Đại Học</div>
+            <div class="department">Khoa Công Nghệ Thông Tin</div>
+            <h1 class="exam-title">ĐỀ THI THỰC HÀNH</h1>
+            <p class="exam-subtitle">Nhập Môn Lập Trình Game — Cơ Bản Unity</p>
+            <div class="exam-meta">
+                <div class="meta-item">
+                    <span class="meta-icon">⏱️</span>
+                    <span><span class="meta-label">Thời gian:</span> 50 phút</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-icon">📝</span>
+                    <span><span class="meta-label">Số câu:</span> 4 câu</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-icon">🎮</span>
+                    <span><span class="meta-label">Công cụ:</span> Unity Engine</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Student Info -->
+        <div class="info-section">
+            <div class="info-card">
+                <div class="info-card-label">Họ và tên</div>
+                <div class="info-card-value">.................................</div>
+            </div>
+            <div class="info-card">
+                <div class="info-card-label">Mã số sinh viên</div>
+                <div class="info-card-value">.................................</div>
+            </div>
+            <div class="info-card">
+                <div class="info-card-label">Lớp</div>
+                <div class="info-card-value">.................................</div>
+            </div>
+            <div class="info-card">
+                <div class="info-card-label">Ngày thi</div>
+                <div class="info-card-value">.................................</div>
+            </div>
+        </div>
+
+        <!-- Notes -->
+        <div class="notes-section">
+            <div class="notes-title">
+                <span>⚠️</span> Lưu ý quan trọng
+            </div>
+            <ul class="notes-list">
+                <li>Sinh viên được phép sử dụng tài liệu và máy tính cá nhân</li>
+                <li>Sử dụng <strong>sprite / tilemap đính kèm</strong> theo yêu cầu từng câu hỏi</li>
+                <li>Lưu project Unity hoàn chỉnh và nộp đúng thời gian quy định</li>
+                <li>Đảm bảo game <strong>chạy được</strong> khi chấm bài, không lỗi build</li>
+                <li>Nếu sprite có nhiều frame animation, sinh viên <strong>phải triển khai animation</strong> tương ứng</li>
+            </ul>
+        </div>
+
+        <!-- Question 1 -->
+        <div class="question-card q1">
+            <div class="question-header">
+                <div class="question-number">01</div>
+                <div class="question-title-area">
+                    <div class="question-label">Câu hỏi 1</div>
+                    <div class="question-title">Cập Nhật Sprite & Animation Nhân Vật</div>
+                </div>
+                <div class="question-points">2.5 điểm</div>
+            </div>
+            <div class="question-body">
+                <p class="question-desc">
+                    Sử dụng <strong>sprite đính kèm</strong> (Player02.png), thay thế sprite hiện tại của nhân vật trong game.
+                    Sinh viên cần cắt sprite sheet và tạo các animation phù hợp cho nhân vật mới.
+                </p>
+                <ul class="requirements">
+                    <li>
+                        <span class="req-icon">🎨</span>
+                        Sử dụng sprite <strong>Player02.png</strong> đính kèm để thay thế nhân vật hiện tại trong game
+                    </li>
+                    <li>
+                        <span class="req-icon">✂️</span>
+                        Cắt (slice) sprite sheet đúng cách trong Unity Sprite Editor
+                    </li>
+                    <li>
+                        <span class="req-icon">🎬</span>
+                        Tạo tối thiểu <strong>2 animation mới</strong> cho nhân vật (ví dụ: Idle, Run, Jump, Attack…)
+                        <span class="highlight-tag tag-important">Bắt buộc</span>
+                    </li>
+                    <li>
+                        <span class="req-icon">🔄</span>
+                        Thiết lập <strong>Animator Controller</strong> với các transition hợp lý giữa các animation
+                    </li>
+                    <li>
+                        <span class="req-icon">🎮</span>
+                        Nhân vật mới phải hoạt động bình thường trong game (di chuyển, nhảy, v.v.)
+                    </li>
+                </ul>
+                <div class="sprite-preview">
+                    <img src="Player02.png" alt="Player02 Sprite Sheet">
+                    <div class="sprite-preview-label">📎 Sprite đính kèm — Player02.png</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Question 2 -->
+        <div class="question-card q2">
+            <div class="question-header">
+                <div class="question-number">02</div>
+                <div class="question-title-area">
+                    <div class="question-label">Câu hỏi 2</div>
+                    <div class="question-title">Thêm Vật Phẩm Mới & Rơi Từ Trên Trời</div>
+                </div>
+                <div class="question-points">2.5 điểm</div>
+            </div>
+            <div class="question-body">
+                <p class="question-desc">
+                    Sử dụng <strong>sprite đính kèm</strong> (items.png), thêm vật phẩm mới vào game.
+                    Khi người chơi bấm phím <kbd>G</kbd>, sẽ có <strong>5 vật phẩm</strong> rơi từ trên trời xuống.
+                </p>
+                <ul class="requirements">
+                    <li>
+                        <span class="req-icon">🖼️</span>
+                        Sử dụng sprite <strong>items.png</strong> đính kèm để tạo vật phẩm mới
+                    </li>
+                    <li>
+                        <span class="req-icon">🎬</span>
+                        Nếu sprite vật phẩm có nhiều frame → <strong>triển khai animation</strong> cho vật phẩm
+                        <span class="highlight-tag tag-note">Lưu ý</span>
+                    </li>
+                    <li>
+                        <span class="req-icon">⌨️</span>
+                        Khi bấm phím <kbd>G</kbd> → Spawn (rơi ra) <strong>5 vật phẩm</strong> từ phía trên màn hình
+                    </li>
+                    <li>
+                        <span class="req-icon">🌧️</span>
+                        Vật phẩm phải rơi xuống tự nhiên (có <strong>Rigidbody2D</strong> hoặc hiệu ứng rơi)
+                    </li>
+                    <li>
+                        <span class="req-icon">📍</span>
+                        Vị trí spawn ngẫu nhiên trên trục X, phía trên camera
+                    </li>
+                </ul>
+                <div class="sprite-preview">
+                    <img src="items.png" alt="Items Sprite Sheet">
+                    <div class="sprite-preview-label">📎 Sprite đính kèm — items.png</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Question 3 -->
+        <div class="question-card q3">
+            <div class="question-header">
+                <div class="question-number">03</div>
+                <div class="question-title-area">
+                    <div class="question-label">Câu hỏi 3</div>
+                    <div class="question-title">Nhân Vật Ngã & Khôi Phục</div>
+                </div>
+                <div class="question-points">2.5 điểm</div>
+            </div>
+            <div class="question-body">
+                <p class="question-desc">
+                    Lập trình chức năng cho phép nhân vật <strong>ngã ra đất</strong> khi bấm phím <kbd>X</kbd>
+                    và <strong>khôi phục lại</strong> trạng thái bình thường khi bấm phím <kbd>C</kbd>.
+                </p>
+                <ul class="requirements">
+                    <li>
+                        <span class="req-icon">💀</span>
+                        Bấm phím <kbd>X</kbd> → Nhân vật <strong>ngã ra đất</strong>, không thể di chuyển hay thực hiện hành động
+                        <span class="highlight-tag tag-important">Bắt buộc</span>
+                    </li>
+                    <li>
+                        <span class="req-icon">🔄</span>
+                        Khi ngã: vô hiệu hóa điều khiển (input), nhân vật nằm bất động trên mặt đất
+                    </li>
+                    <li>
+                        <span class="req-icon">✨</span>
+                        Bấm phím <kbd>C</kbd> → <strong>Khôi phục</strong> nhân vật về trạng thái bình thường
+                        <span class="highlight-tag tag-important">Bắt buộc</span>
+                    </li>
+                    <li>
+                        <span class="req-icon">🎮</span>
+                        Sau khi khôi phục, nhân vật hoạt động bình thường trở lại (di chuyển, nhảy, v.v.)
+                    </li>
+                    <li>
+                        <span class="req-icon">🎬</span>
+                        Nên có hiệu ứng hoặc animation thể hiện trạng thái ngã (xoay nhân vật, animation chết, v.v.)
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Question 4 -->
+        <div class="question-card q4">
+            <div class="question-header">
+                <div class="question-number">04</div>
+                <div class="question-title-area">
+                    <div class="question-label">Câu hỏi 4</div>
+                    <div class="question-title">Bổ Sung Tilemap Vào Game</div>
+                </div>
+                <div class="question-points">2.5 điểm</div>
+            </div>
+            <div class="question-body">
+                <p class="question-desc">
+                    Sử dụng <strong>tilemap đính kèm</strong> (tilemap.png), bổ sung thêm map/địa hình vào game hiện tại,
+                    tạo thêm khu vực mới hoặc mở rộng bản đồ game.
+                </p>
+                <ul class="requirements">
+                    <li>
+                        <span class="req-icon">🗺️</span>
+                        Sử dụng <strong>tilemap.png</strong> đính kèm, import và cắt tile đúng kích thước
+                    </li>
+                    <li>
+                        <span class="req-icon">🏗️</span>
+                        Tạo <strong>Tile Palette</strong> trong Unity từ tilemap đã import
+                    </li>
+                    <li>
+                        <span class="req-icon">🎨</span>
+                        Sử dụng Tile Palette để vẽ/bổ sung thêm <strong>địa hình mới</strong> vào game
+                    </li>
+                    <li>
+                        <span class="req-icon">📐</span>
+                        Tilemap mới phải có <strong>Tilemap Collider 2D</strong> để nhân vật tương tác được
+                    </li>
+                    <li>
+                        <span class="req-icon">🎮</span>
+                        Nhân vật phải di chuyển và tương tác bình thường trên tilemap mới
+                    </li>
+                </ul>
+                <div class="sprite-preview">
+                    <img src="tilemap.png" alt="Tilemap Sprite">
+                    <div class="sprite-preview-label">📎 Tilemap đính kèm — tilemap.png</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="exam-footer">
+            <p class="footer-text">— Hết đề thi —</p>
+            <p class="good-luck">Chúc các bạn làm bài tốt! 🎮</p>
+        </footer>
+    </div>
+
+    <!-- Save PNG Button -->
+    <button class="save-png-btn" id="savePngBtn" onclick="savePNG()">
+        <span class="btn-icon">📥</span>
+        Lưu ảnh PNG
+    </button>
+
+    <!-- html2canvas Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script>
+        async function savePNG() {
+            const btn = document.getElementById('savePngBtn');
+            btn.classList.add('capturing');
+            btn.innerHTML = '<span class="btn-icon">⏳</span> Đang xử lý...';
+
+            // Hide button during capture
+            btn.style.display = 'none';
+
+            try {
+                const canvas = await html2canvas(document.body, {
+                    backgroundColor: '#0f0f1a',
+                    scale: 2,
+                    useCORS: true,
+                    logging: false,
+                    windowWidth: document.body.scrollWidth,
+                    windowHeight: document.body.scrollHeight
+                });
+
+                const link = document.createElement('a');
+                link.download = 'De_Thi_Nhap_Mon_Game.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            } catch (err) {
+                alert('Có lỗi khi lưu ảnh. Vui lòng thử lại!');
+                console.error(err);
+            }
+
+            // Show button again
+            btn.style.display = 'flex';
+            btn.classList.remove('capturing');
+            btn.innerHTML = '<span class="btn-icon">📥</span> Lưu ảnh PNG';
+        }
+    </script>
+</body>
+</html>
